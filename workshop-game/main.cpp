@@ -12,6 +12,7 @@
 
 #include "box2d/box2d.h"
 #include "game_context.h"
+#include "game_object.h"
 
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
