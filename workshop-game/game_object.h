@@ -16,7 +16,15 @@ public:
 
     // Called every frame
     virtual void Update();
+
+    // Signals the engine if object should be deleted
+    bool ShouldDelete() const
+    {
+        return shouldDelete;
+    }
+
 protected:
+    bool shouldDelete = false;
     const GameContext* game_context;
 };
 
@@ -24,6 +32,7 @@ protected:
 // A GameObject that also contains a b2Body
 class PhysicalGameObject : public GameObject
 {
+public:
 
     // Main constructor
     PhysicalGameObject(const GameContext* context);

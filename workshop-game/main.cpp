@@ -15,6 +15,30 @@
 #include "game_object.h"
 
 
+class Box : public PhysicalGameObject 
+{
+public:
+    Box(const GameContext* context, b2Vec2 pos)
+        : PhysicalGameObject(context)
+    {
+        b2PolygonShape box_shape;
+        box_shape.SetAsBox(1.0f, 1.0f);
+        b2FixtureDef box_fd;
+        box_fd.shape = &box_shape;
+        box_fd.density = 20.0f;
+        box_fd.friction = 1.0f;
+        b2BodyDef box_bd;
+        box_bd.type = b2_dynamicBody;
+        box_bd.position.Set(pos.x, pos.y);
+        body = context->world->CreateBody(&box_bd);
+        body->CreateFixture(&box_fd);
+        body->SetAngularVelocity(2.0f);
+    }
+
+    virtual ~Box() = default;
+};
+
+
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     // code for keys here https://www.glfw.org/docs/3.3/group__keys.html
@@ -43,6 +67,11 @@ void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 m
 
     // Retrieve GameContext from the GLFW window
     GameContext* context = (GameContext*)glfwGetWindowUserPointer(window);
+
+    if (action == GLFW_PRESS) 
+    {
+        context->all_objects.push_back(std::make_unique<Box>(context, pw));
+    }
 }
 
 int main()
@@ -140,6 +169,20 @@ int main()
         float timeStep = 60 > 0.0f ? 1.0f / 60 : float(0.0f);
         context.world->Step(timeStep, 8, 3);
 
+        // Call update on all game objects
+        for (auto& object : context.all_objects)
+        {
+            object->Update();
+        }
+
+        // Check if objects should be deleted. Remove all objcts from our vector
+        // that have shouldDelete as on. This code is based on the erase-remove
+        // idiom. References https://stackoverflow.com/q/347441 and
+        // https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
+        context.all_objects.erase(std::remove_if(context.all_objects.begin(), context.all_objects.end(),
+                                                 [](const std::unique_ptr<GameObject>& object) { return object->ShouldDelete(); }),
+                                  context.all_objects.end());
+
         // Render everything on the screen
         context.world->DebugDraw();
         g_debugDraw.Flush();
@@ -172,6 +215,9 @@ int main()
     // Terminate the program if it reaches here
     glfwTerminate();
     g_debugDraw.Destroy();
+    // objcts need to be deleted before the world is deleted
+    context.all_objects.clear();
+    // destroy world
     delete context.world;
 
     return 0;
