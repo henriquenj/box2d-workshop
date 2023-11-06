@@ -11,7 +11,7 @@
 class GameObject
 {
 public:
-    GameObject(const GameContext* context);
+    GameObject();
     virtual ~GameObject();
 
     // Called every frame
@@ -25,7 +25,6 @@ public:
 
 protected:
     bool shouldDelete = false;
-    const GameContext* game_context;
 };
 
 
@@ -51,4 +50,5 @@ public:
     virtual ~PhysicalGameObject();
 protected:
     b2Body* body;
+    const GameContext* game_context;
 };

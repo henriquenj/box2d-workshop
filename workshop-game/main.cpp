@@ -13,6 +13,7 @@
 #include "box2d/box2d.h"
 #include "game_context.h"
 #include "game_object.h"
+#include <text.h>
 
 
 class Box : public PhysicalGameObject 
@@ -71,6 +72,7 @@ void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 m
     if (action == GLFW_PRESS) 
     {
         context->all_objects.push_back(std::make_unique<Box>(context, pw));
+        context->all_objects.push_back(std::make_unique<Text>(&g_debugDraw, xd, yd, "Text!", ImColor(0.63f, 0.02f, 0.11f)));
     }
 }
 

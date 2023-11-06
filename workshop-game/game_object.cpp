@@ -4,9 +4,8 @@
 #include "game_object.h"
 
 
-GameObject::GameObject(const GameContext* context)
+GameObject::GameObject()
 {
-    game_context = context;
 }
 
 GameObject::~GameObject()
@@ -20,18 +19,18 @@ void GameObject::Update()
 
 // PhysicalGameObject functions
 PhysicalGameObject::PhysicalGameObject(const GameContext* context)
-    : GameObject(context), body(nullptr)
+    : body(nullptr), game_context(context)
 {
 }
 
 // Move constructor
 PhysicalGameObject::PhysicalGameObject(PhysicalGameObject&& other)
-    : GameObject(other.game_context)
 {
     // copy pointer to b2Body and nullify other's body (so it is not deleted
     // twice)
     body = other.body;
     other.body == nullptr;
+    game_context = other.game_context;
 }
 
 // Move assigment operator
@@ -49,6 +48,7 @@ PhysicalGameObject& PhysicalGameObject::operator=(PhysicalGameObject&& other)
         // copy the other body into this body and nullify the other's body
         body = other.body;
         other.body == nullptr;
+        game_context = other.game_context;
     }
 
     return *this;

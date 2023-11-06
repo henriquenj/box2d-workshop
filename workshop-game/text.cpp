@@ -1,18 +1,16 @@
 
 #include <text.h>
 
-Text::Text(int x_pos, int y_pos, const std::string& input)
+Text::Text(DebugDraw* _draw, int _x, int _y, const std::string& _text, const ImColor& _color)
 {
-    x = x_pos;
-    y = y_pos;
-    text = input;
+    x = _x;
+    y = _y;
+    text = _text;
+    color = _color;
+    draw = _draw;
 }
 
-void Text::SetText(const std::string& input)
+void Text::Update()
 {
-    text = input;
-}
-
-void Text::Render(const DebugDraw* draw)
-{
+    draw->DrawString(x, y, color, text.c_str());
 }
