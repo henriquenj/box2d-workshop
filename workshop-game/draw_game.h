@@ -27,6 +27,8 @@
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
 
+#include "imgui/imgui.h"
+
 #include "box2d/box2d.h"
 
 struct b2AABB;
@@ -76,9 +78,9 @@ public:
 
 	void DrawPoint(const b2Vec2& p, float size, const b2Color& color) override;
 
-	void DrawString(int x, int y, const char* string, ...); 
+	void DrawString(int x, int y, const ImColor& color, const char* string, ...);
 
-	void DrawString(const b2Vec2& p, const char* string, ...);
+	void DrawString(const b2Vec2& p, const ImColor& color, const char* string, ...);
 
 	void DrawAABB(b2AABB* aabb, const b2Color& color);
 

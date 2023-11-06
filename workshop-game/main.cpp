@@ -175,9 +175,9 @@ int main()
             object->Update();
         }
 
-        // Check if objects should be deleted. Remove all objcts from our vector
-        // that have shouldDelete as on. This code is based on the erase-remove
-        // idiom. References https://stackoverflow.com/q/347441 and
+        // Check if objects should be deleted. Remove all objects from our
+        // vector that have shouldDelete as on. This code is based on the
+        // erase-remove idiom. References https://stackoverflow.com/q/347441 and
         // https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
         context.all_objects.erase(std::remove_if(context.all_objects.begin(), context.all_objects.end(),
                                                  [](const std::unique_ptr<GameObject>& object) { return object->ShouldDelete(); }),

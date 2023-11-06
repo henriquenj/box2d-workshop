@@ -25,7 +25,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include "imgui/imgui.h"
 #include "imgui_impl_glfw_game.h"
 #include "imgui_impl_opengl3_game.h"
 
@@ -786,7 +785,7 @@ void DebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
 }
 
 //
-void DebugDraw::DrawString(int x, int y, const char* string, ...)
+void DebugDraw::DrawString(int x, int y, const ImColor& color, const char* string, ...)
 {
 	if (m_showUI == false)
 	{
@@ -797,13 +796,13 @@ void DebugDraw::DrawString(int x, int y, const char* string, ...)
 	va_start(arg, string);
 	ImGui::Begin("Overlay", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	ImGui::SetCursorPos(ImVec2(float(x), float(y)));
-	ImGui::TextColoredV(ImColor(230, 153, 153, 255), string, arg);
+	ImGui::TextColoredV(color, string, arg);
 	ImGui::End();
 	va_end(arg);
 }
 
 //
-void DebugDraw::DrawString(const b2Vec2& pw, const char* string, ...)
+void DebugDraw::DrawString(const b2Vec2& pw, const ImColor& color, const char* string, ...)
 {
 	b2Vec2 ps = g_camera.ConvertWorldToScreen(pw);
 
@@ -811,7 +810,7 @@ void DebugDraw::DrawString(const b2Vec2& pw, const char* string, ...)
 	va_start(arg, string);
 	ImGui::Begin("Overlay", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoScrollbar);
 	ImGui::SetCursorPos(ImVec2(ps.x, ps.y));
-	ImGui::TextColoredV(ImColor(230, 153, 153, 255), string, arg);
+	ImGui::TextColoredV(color, string, arg);
 	ImGui::End();
 	va_end(arg);
 }
