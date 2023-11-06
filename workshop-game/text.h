@@ -19,12 +19,21 @@ public:
     Text(DebugDraw* _draw,int _x, int _y, const std::string& _text, const ImColor& _color);
 
     // Render the text on the screen using DebugDraw
-    void Update();
+    virtual void Update() override;
     virtual ~Text() = default;
 
-private:
+protected:
     std::string text;
     ImColor color;
     int x,y;
     DebugDraw* draw;
+};
+
+
+// Text class that flies away
+class FloatingText : public Text {
+public:
+    FloatingText(DebugDraw* _draw, int _x, int _y, const std::string& _text, const ImColor& _color);
+    virtual void Update() override;
+    virtual ~FloatingText() = default;
 };

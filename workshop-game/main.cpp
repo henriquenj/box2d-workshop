@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <chrono>
 #include <thread>
+#include <random>
 
 #include "imgui/imgui.h"
 #include "imgui_impl_glfw_game.h"
@@ -13,7 +14,7 @@
 #include "box2d/box2d.h"
 #include "game_context.h"
 #include "game_object.h"
-#include <text.h>
+#include "text.h"
 
 
 class Box : public PhysicalGameObject 
@@ -72,7 +73,14 @@ void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 m
     if (action == GLFW_PRESS) 
     {
         context->all_objects.push_back(std::make_unique<Box>(context, pw));
-        context->all_objects.push_back(std::make_unique<Text>(&g_debugDraw, xd, yd, "Text!", ImColor(0.63f, 0.02f, 0.11f)));
+
+        // Some basic random number generator so we have nice text on the screen
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> dist100(1, 100); // distribution in range [1, 6]
+        std::string text(std::to_string(dist100(rng)));
+        text += "!";
+        context->all_objects.push_back(std::make_unique<FloatingText>(&g_debugDraw, xd, yd, text, ImColor(0.35f, 0.73f, 0.87f)));
     }
 }
 
