@@ -14,8 +14,13 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
+    // Does nothing on base class
 }
 
+void GameObject::OnKeyPress(int, int, int, int)
+{
+    // Does nothing on base class
+}
 
 // PhysicalGameObject functions
 PhysicalGameObject::PhysicalGameObject(const GameContext* context)

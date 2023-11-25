@@ -21,14 +21,30 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 {
     // code for keys here https://www.glfw.org/docs/3.3/group__keys.html
     // and modifiers https://www.glfw.org/docs/3.3/group__mods.html
+
+    // Retrieve GameContext from the GLFW window
+    GameContext* context = (GameContext*)glfwGetWindowUserPointer(window);
+
+    // forward key press to all game objects
+    for (auto& game_object : context->all_objects)
+    {
+        game_object->OnKeyPress(key, scancode, action, mods);
+    }
 }
 
-void MouseMotionCallback(GLFWwindow*, double xd, double yd)
+void MouseMotionCallback(GLFWwindow* window, double xd, double yd)
 {
     // get the position where the mouse was pressed
     b2Vec2 ps((float)xd, (float)yd);
     // now convert this position to Box2D world coordinates
     b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+
+    // Retrieve GameContext from the GLFW window
+    GameContext* context = (GameContext*)glfwGetWindowUserPointer(window);
+
+    // update GameContext with mouse positions
+    context->mouse_position_window = ps;
+    context->mouse_position_box2d = pw;
 }
 
 void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 mods)

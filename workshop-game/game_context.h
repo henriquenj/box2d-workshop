@@ -24,4 +24,27 @@ public:
 
     // All game objects in the game. Can be any type of game object
     std::vector<std::unique_ptr<GameObject>> all_objects;
+
+    // Get mouse position with those getters
+
+    // Get mouse position in Window coordinates
+    b2Vec2 GetMousePosWindow() const
+    {
+        return mouse_position_window;
+    }
+
+    // Get mouse position in Box2D coordinates
+    b2Vec2 GetMousePosWorld() const
+    {
+        return mouse_position_box2d;
+    }
+
+    // for updating mouse positions, only this function is allowed to do that
+    friend void MouseMotionCallback(GLFWwindow*, double xd, double yd);
+
+private:
+    // the current position of the mouse in window coordinates
+    b2Vec2 mouse_position_window;
+    // the current position of the mouse in Box2D coordinates
+    b2Vec2 mouse_position_box2d;
 };

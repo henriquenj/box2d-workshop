@@ -17,6 +17,11 @@ public:
     // Called every frame
     virtual void Update();
 
+    // Called every time there's a keyboard press.
+    // code for keys here https://www.glfw.org/docs/3.3/group__keys.html
+    // and modifiers https://www.glfw.org/docs/3.3/group__mods.html
+    virtual void OnKeyPress(int key, int scancode, int action, int mods);
+
     // Signals the engine if object should be deleted
     bool ShouldDelete() const
     {
