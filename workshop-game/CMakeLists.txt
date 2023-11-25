@@ -5,6 +5,8 @@ set (GAME_SOURCE_FILES
     draw_game.h
     game_object.cpp
     game_object.h
+    character.h
+    character.cpp
     imgui_impl_glfw_game.cpp
     imgui_impl_glfw_game.h
     imgui_impl_opengl3_game.cpp

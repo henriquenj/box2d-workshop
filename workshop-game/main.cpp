@@ -15,31 +15,7 @@
 #include "game_context.h"
 #include "game_object.h"
 #include "text.h"
-
-
-class Box : public PhysicalGameObject 
-{
-public:
-    Box(const GameContext* context, b2Vec2 pos)
-        : PhysicalGameObject(context)
-    {
-        b2PolygonShape box_shape;
-        box_shape.SetAsBox(1.0f, 1.0f);
-        b2FixtureDef box_fd;
-        box_fd.shape = &box_shape;
-        box_fd.density = 20.0f;
-        box_fd.friction = 1.0f;
-        b2BodyDef box_bd;
-        box_bd.type = b2_dynamicBody;
-        box_bd.position.Set(pos.x, pos.y);
-        body = context->world->CreateBody(&box_bd);
-        body->CreateFixture(&box_fd);
-        body->SetAngularVelocity(2.0f);
-    }
-
-    virtual ~Box() = default;
-};
-
+#include "character.h"
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -70,17 +46,8 @@ void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 m
     // Retrieve GameContext from the GLFW window
     GameContext* context = (GameContext*)glfwGetWindowUserPointer(window);
 
-    if (action == GLFW_PRESS) 
+    if (action == GLFW_PRESS)
     {
-        context->all_objects.push_back(std::make_unique<Box>(context, pw));
-
-        // Some basic random number generator so we have nice text on the screen
-        std::random_device dev;
-        std::mt19937 rng(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> dist100(1, 100); // distribution in range [1, 6]
-        std::string text(std::to_string(dist100(rng)));
-        text += "!";
-        context->all_objects.push_back(std::make_unique<FloatingText>(&g_debugDraw, xd, yd, text, ImColor(0.35f, 0.73f, 0.87f)));
     }
 }
 
