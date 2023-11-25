@@ -62,8 +62,10 @@ void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 m
     // Retrieve GameContext from the GLFW window
     GameContext* context = (GameContext*)glfwGetWindowUserPointer(window);
 
-    if (action == GLFW_PRESS)
+    // Forward mouse press to all game objects
+    for (auto& game_object : context->all_objects)
     {
+        game_object->OnMousePress(button, action, mods);
     }
 }
 

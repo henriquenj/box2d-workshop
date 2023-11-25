@@ -22,6 +22,11 @@ void GameObject::OnKeyPress(int, int, int, int)
     // Does nothing on base class
 }
 
+void GameObject::OnMousePress(int32, int32, int32)
+{
+    // Does nothing on base class
+}
+
 // PhysicalGameObject functions
 PhysicalGameObject::PhysicalGameObject(const GameContext* context)
     : body(nullptr), game_context(context)

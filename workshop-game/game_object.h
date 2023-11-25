@@ -22,6 +22,12 @@ public:
     // and modifiers https://www.glfw.org/docs/3.3/group__mods.html
     virtual void OnKeyPress(int key, int scancode, int action, int mods);
 
+    // Called everytime there's a mouse press
+    // code for mouse button keys https://www.glfw.org/docs/3.3/group__buttons.html
+    // and modifiers https://www.glfw.org/docs/3.3/group__buttons.html
+    // action is either GLFW_PRESS or GLFW_RELEASE
+    virtual void OnMousePress(int32 button, int32 action, int32 mods);
+
     // Signals the engine if object should be deleted
     bool ShouldDelete() const
     {
