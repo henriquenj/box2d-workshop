@@ -16,6 +16,7 @@
 #include "game_object.h"
 #include "text.h"
 #include "character.h"
+#include "block.h"
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -123,6 +124,9 @@ int main()
 
     // Create Character object
     context.all_objects.push_back(std::make_unique<Character>(&context));
+
+    // Create a block
+    context.all_objects.push_back(std::make_unique<Block>(&context, -6.0f));
 
     // This is the color of our background in RGB components
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

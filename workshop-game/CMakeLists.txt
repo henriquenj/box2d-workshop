@@ -7,6 +7,8 @@ set (GAME_SOURCE_FILES
     game_object.h
     character.h
     character.cpp
+    block.h
+    block.cpp
     imgui_impl_glfw_game.cpp
     imgui_impl_glfw_game.h
     imgui_impl_opengl3_game.cpp
