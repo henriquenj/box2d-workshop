@@ -15,6 +15,8 @@ public:
     virtual void OnKeyPress(int key, int scancode, int action, int mods) override;
     virtual ~Character();
 
+    b2Vec2 GetPosition() const;
+
 private:
     // Enum to represent the current movement of the character (which key is
     // being held down, basically)

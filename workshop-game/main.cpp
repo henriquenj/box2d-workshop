@@ -124,9 +124,9 @@ int main()
 
     // Create Character object
     context.all_objects.push_back(std::make_unique<Character>(&context));
+    // store raw pointer to Character as well, which is a bit ugly
+    Character* character = dynamic_cast<Character*>(context.all_objects.back().get());
 
-    // Create a block
-    context.all_objects.push_back(std::make_unique<Block>(&context, -6.0f));
 
     // This is the color of our background in RGB components
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -134,6 +134,10 @@ int main()
     // Control the frame rate. One draw per monitor refresh.
     std::chrono::duration<double> frameTime(0.0);
     std::chrono::duration<double> sleepAdjust(0.0);
+
+    // to create timers, store a frame counter that goes from 60 to 0, and then
+    // back to 60.
+    int frame_counter = 60;
 
     // Main application loop
     while (!glfwWindowShouldClose(context.mainWindow)) {
@@ -166,6 +170,15 @@ int main()
         uint32 flags = 0;
         flags += b2Draw::e_shapeBit;
         g_debugDraw.SetFlags(flags);
+
+        frame_counter--;
+        if (frame_counter == 0)
+        {
+            // one second has passed, reset timer
+            frame_counter = 60;
+            // Create a block
+            context.all_objects.push_back(std::make_unique<Block>(&context, character->GetPosition().x));
+        }
 
         // When we call Step(), we run the simulation for one frame
         float timeStep = 60 > 0.0f ? 1.0f / 60 : float(0.0f);

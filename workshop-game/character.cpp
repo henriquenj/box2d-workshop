@@ -104,3 +104,8 @@ void Character::OnKeyPress(int key, int scancode, int action, int mods)
     }
 
 }
+
+b2Vec2 Character::GetPosition() const
+{
+    return body->GetPosition();
+}
