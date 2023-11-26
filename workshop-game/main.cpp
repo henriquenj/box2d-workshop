@@ -121,6 +121,9 @@ int main()
     ground = context.world->CreateBody(&ground_bd);
     ground->CreateFixture(&ground_shape, 0.0f);
 
+    // Create Character object
+    context.all_objects.push_back(std::make_unique<Character>(&context));
+
     // This is the color of our background in RGB components
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 

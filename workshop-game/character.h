@@ -10,5 +10,7 @@ class Character : public PhysicalGameObject
 {
 public:
     Character(const GameContext* context);
+
+    virtual void Update() override;
     virtual ~Character();
 };
