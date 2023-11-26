@@ -70,6 +70,33 @@ void MouseButtonCallback(GLFWwindow* window, int32 button, int32 action, int32 m
     }
 }
 
+class GameContactListener : public b2ContactListener
+{
+public:
+    GameContactListener(){};
+    virtual ~GameContactListener() = default;
+
+    void BeginContact(b2Contact* contact) override
+    {
+        // if any of the two colliding bodies have no userData (i.e. they are
+        // not PhysicalGameObjects), stop processing
+        if (contact->GetFixtureA()->GetBody()->GetUserData().pointer == NULL ||
+            contact->GetFixtureB()->GetBody()->GetUserData().pointer == NULL
+            ) {
+            // stop processing
+            return;
+        }
+        // retrieve our two PhysicalGameObject
+        PhysicalGameObject* object1 = (PhysicalGameObject*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+        PhysicalGameObject* object2 = (PhysicalGameObject*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+        // call our new function
+        object1->OnCollision(object2);
+        object2->OnCollision(object1);
+
+    }
+};
+
+
 int main()
 {
     GameContext context;

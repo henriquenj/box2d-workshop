@@ -59,6 +59,10 @@ public:
     PhysicalGameObject& operator=(PhysicalGameObject&& other);
 
     virtual ~PhysicalGameObject();
+
+    // Called when this b2Body collides with another b2Body
+    virtual void OnCollision(PhysicalGameObject* other);
+
 protected:
     b2Body* body;
     const GameContext* game_context;

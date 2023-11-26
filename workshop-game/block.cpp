@@ -27,8 +27,11 @@ Block::Block(const GameContext* context, float starter_center)
     bd.type = b2_dynamicBody;
     // subtracting -15 make the range effectively [-15, 15]
     bd.position.Set((int(dist30(rng)) - 15) + starter_center, 30);
+    // set userData
+    bd.userData.pointer = (uintptr_t)this;
     body = context->world->CreateBody(&bd);
     body->CreateFixture(&fd);
+
 }
 
 Block::~Block()

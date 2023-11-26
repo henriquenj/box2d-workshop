@@ -39,6 +39,12 @@ PhysicalGameObject::PhysicalGameObject(PhysicalGameObject&& other)
     // copy pointer to b2Body and nullify other's body (so it is not deleted
     // twice)
     body = other.body;
+    // update userData, so Box2D has an updated reference for this object
+    if (body != nullptr)
+    {
+        b2BodyUserData& userData = body->GetUserData();
+        userData.pointer = (uintptr_t)this;
+    }
     other.body == nullptr;
     game_context = other.game_context;
 }
@@ -71,4 +77,10 @@ PhysicalGameObject::~PhysicalGameObject()
         // if there's a body defined for this game object, delete it now
         game_context->world->DestroyBody(body);
     }
+}
+
+
+void PhysicalGameObject::OnCollision(PhysicalGameObject* other)
+{
+    // Does nothing on base class
 }
