@@ -12,6 +12,8 @@ Character::Character(GameContext* context)
     b2CircleShape circle_shape;
     circle_shape.m_radius = 1.0f;
     b2FixtureDef circle_fd;
+    // set a group for the Character, so it won't collide with the bullets
+    circle_fd.filter.groupIndex = -1;
     circle_fd.shape = &circle_shape;
     circle_fd.density = 20.0f;
     circle_fd.friction = 1.0f;
@@ -119,10 +121,8 @@ void Character::OnMousePress(int32 button, int32 action, int32 mods)
         b2Vec2 direction = mouse_position - pos;
         // so the angle is not huge and the bullet goes too fast
         direction.Normalize();
-        // now we set a size manually, that is the strenght of the bullet
+        // now we set a size manually, that is the strength of the bullet
         direction *= 2.5f;
-        // make them start slighlty above the character
-        pos.y += 1.0f;
         game_context->to_create.push_back(std::make_unique<Bullet>(game_context, pos, direction));
     }
 }

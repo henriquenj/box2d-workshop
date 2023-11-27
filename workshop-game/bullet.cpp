@@ -11,6 +11,8 @@ Bullet::Bullet(GameContext* context, b2Vec2 starting, b2Vec2 direction)
     b2CircleShape shape;
     shape.m_radius = 0.4f;
     b2FixtureDef fd;
+    // set a group for the Bullet, so it won't collide with the character
+    fd.filter.groupIndex = -1;
     fd.shape = &shape;
     fd.density = 0.1f;
     fd.friction = 0.1f;
