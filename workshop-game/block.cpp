@@ -37,6 +37,9 @@ Block::Block(GameContext* context, float starter_center)
     body->SetAngularVelocity(2.0f);
 
     time_to_live = 300;
+    // despawns after 1 second of being killed
+    time_to_live_dying = 40;
+    state = ALIVE;
 
 }
 
@@ -46,22 +49,34 @@ Block::~Block()
 
 void Block::Update()
 {
-    // block live for a few seconds and then despawn
-    time_to_live--;
-    if (time_to_live == 0)
+    if (state == ALIVE)
     {
-        b2Vec2 pos = body->GetPosition();
-        shouldDelete = true;
-        // make player lose one live
-        game_context->lives--;
-        // spawn text where this Block died
-        game_context->to_create.push_back(std::make_unique<FloatingText>(&g_debugDraw,
-                                                                         pos.x,
-                                                                         pos.y,
-                                                                         "-1",
-                                                                         ImColor(0.85, 0.00f, 0.00f),
-                                                                         0.1f /* speed */,
-                                                                         60 /* ttl */));
+        // block live for a few seconds and then despawn
+        time_to_live--;
+        if (time_to_live == 0)
+        {
+            b2Vec2 pos = body->GetPosition();
+            shouldDelete = true;
+            // make player lose one live
+            game_context->lives--;
+            // spawn text where this Block died
+            game_context->to_create.push_back(std::make_unique<FloatingText>(&g_debugDraw,
+                                                                             pos.x,
+                                                                             pos.y,
+                                                                             "-1",
+                                                                             ImColor(0.85, 0.00f, 0.00f),
+                                                                             0.1f /* speed */,
+                                                                             60 /* ttl */));
+        }
+    }
+    else if (state == DYING)
+    {
+        time_to_live_dying--;
+        if (time_to_live_dying <= 0)
+        {
+            // kills it
+            shouldDelete = true;
+        }
     }
 }
 
@@ -75,7 +90,9 @@ void Block::OnCollision(PhysicalGameObject* other, b2Contact* contact)
     // if collides with a bullet, kills the bullet and the block
     if (other->GetGameObjectType() == GameObjectType::BULLET)
     {
-        shouldDelete = true;
+        // set DYING state
+        state = DYING;
+        // kill bullet
         other->Destroy();
     }
 }
