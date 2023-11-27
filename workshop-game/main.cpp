@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 #include <random>
+#include <map>
 
 #include "imgui/imgui.h"
 #include "imgui_impl_glfw_game.h"
@@ -184,9 +185,9 @@ int main()
     std::chrono::duration<double> frameTime(0.0);
     std::chrono::duration<double> sleepAdjust(0.0);
 
-    // to create timers, store a frame counter that goes from 60 to 0, and then
-    // back to 60.
-    int frame_counter = 60;
+    // to create timers, store a frame counter that goes from to 0, and then
+    // back goes back to the starting amount (depending on level).
+    int frame_counter = 80 /* spawn time at level 1 */;
 
     // Main application loop
     while (!glfwWindowShouldClose(context.mainWindow)) {
@@ -221,10 +222,26 @@ int main()
         g_debugDraw.SetFlags(flags);
 
         frame_counter--;
-        if (frame_counter == 0)
+        if (frame_counter <= 0)
         {
-            // one second has passed, reset timer
-            frame_counter = 60;
+            // timer has expired, reset it. The time it takes to create a block
+            // is related to the current level. TODO: this search can be moved
+            // to level change instead (it does not need to be done at every
+            // timer expiration)
+            static const std::map<int /* level */, int /* block creation interval*/> level_to_respawn_time = {
+                {1, 80}, {2, 70}, {3, 60}, {4, 50}, {5, 40}, {6, 30}, {7, 20}, {8, 10}};
+            auto respawn_time_it = level_to_respawn_time.find(context.level);
+            if (respawn_time_it != level_to_respawn_time.end())
+            {
+                // use respawn time from the map
+                frame_counter = respawn_time_it->second;
+            }
+            else
+            {
+                // respawn time is not defined, we are probably on a bigger
+                // level than 8, so use 5 from now on
+                frame_counter = 5;
+            }
             // Create a block
             context.all_objects.push_back(std::make_unique<Block>(&context, character->GetPosition().x));
         }
