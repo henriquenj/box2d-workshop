@@ -15,8 +15,8 @@ class Text : public GameObject
 {
 public:
 
-    // X and Y startup position of the text and its contents.
-    Text(DebugDraw* _draw,int _x, int _y, const std::string& _text, const ImColor& _color);
+    // X and Y startup position (in box2d coordinates) of the text and its contents.
+    Text(DebugDraw* _draw,float _x, float _y, const std::string& _text, const ImColor& _color);
 
     // Render the text on the screen using DebugDraw
     virtual void Update() override;
@@ -25,7 +25,8 @@ public:
 protected:
     std::string text;
     ImColor color;
-    int x,y;
+    // Current position of the text in b2World coordinates
+    float x,y;
     DebugDraw* draw;
 };
 
@@ -33,7 +34,11 @@ protected:
 // Text class that flies away
 class FloatingText : public Text {
 public:
-    FloatingText(DebugDraw* _draw, int _x, int _y, const std::string& _text, const ImColor& _color);
+    FloatingText(DebugDraw* _draw, float _x, float _y, const std::string& _text, const ImColor& _color, float _speed, int _ttl);
     virtual void Update() override;
     virtual ~FloatingText() = default;
+private:
+    // after how many frames should this text disappear
+    int ttl;
+    float speed;
 };

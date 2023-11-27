@@ -50,15 +50,16 @@ void Block::Update()
     if (time_to_live == 0)
     {
         b2Vec2 pos = body->GetPosition();
-        b2Vec2 pos_window = g_camera.ConvertWorldToScreen(pos);
         shouldDelete = true;
         // make palyer lose one point
         game_context->points--;
         // spawn text where this Block died
         game_context->to_create.push_back(std::make_unique<FloatingText>(&g_debugDraw,
-                                                                         pos_window.x,
-                                                                         pos_window.y,
+                                                                         pos.x,
+                                                                         pos.y,
                                                                          "-1",
-                                                                         ImColor(0.85, 0.00f, 0.00f)));
+                                                                         ImColor(0.85, 0.00f, 0.00f),
+                                                                         0.1f /* speed */,
+                                                                         40 /* ttl */));
     }
 }
