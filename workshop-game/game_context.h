@@ -23,6 +23,8 @@ public:
     b2World* world = nullptr;
     // player start with 10 lives
     int lives = 10;
+    // the level of the game, changes every time lives reaches 20
+    int level = 1;
 
     // All game objects in the game. Can be any type of game object
     std::vector<std::unique_ptr<GameObject>> all_objects;

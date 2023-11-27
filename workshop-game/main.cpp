@@ -232,6 +232,22 @@ int main()
         // draw points on the corner of the screen
         std::string lives_text = "Lives: " + std::to_string(context.lives);
         g_debugDraw.DrawString(10, 10, ImColor(0.35f, 0.73f, 0.87f), lives_text.c_str());
+        std::string level = "Level: " + std::to_string(context.level);
+        g_debugDraw.DrawString(10, 200, ImColor(0.35f, 0.73f, 0.87f), level.c_str());
+
+        // if lives is 20, reset it to 10 and then increase level
+        if (context.lives >= 20)
+        {
+            context.lives = 10;
+            context.level++;
+            context.all_objects.push_back(std::make_unique<FloatingText>(&g_debugDraw,
+                                                                         character->GetPosition().x,
+                                                                         character->GetPosition().y,
+                                                                         "Faster!",
+                                                                         ImColor(0.00, 0.85, 0.00f),
+                                                                         0.1f /* speed */,
+                                                                         120 /* ttl */));
+        }
 
         // When we call Step(), we run the simulation for one frame
         float timeStep = 60 > 0.0f ? 1.0f / 60 : float(0.0f);

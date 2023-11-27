@@ -13,7 +13,7 @@ Text::Text(DebugDraw* _draw, float _x, float _y, const std::string& _text, const
 void Text::Update()
 {
     // convert from box2d coordinates to camera coordinates before drawing on
- // the screen
+    // the screen
     b2Vec2 pos_window = g_camera.ConvertWorldToScreen(b2Vec2(x, y));
     draw->DrawString(pos_window.x, pos_window.y, color, text.c_str());
 }

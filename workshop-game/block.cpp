@@ -82,9 +82,10 @@ void Block::Update()
 
 void Block::OnCollision(PhysicalGameObject* other, b2Contact* contact)
 {
-    if (!contact->IsTouching())
+    if (!contact->IsTouching() || state == DYING)
     {
-        // if it is not touching, don't process it.
+        // if it is not touching, or the block is already dying, don't process
+        // it.
         return;
     }
     // if collides with a bullet, kills the bullet and the block
@@ -94,5 +95,18 @@ void Block::OnCollision(PhysicalGameObject* other, b2Contact* contact)
         state = DYING;
         // kill bullet
         other->Destroy();
+        // spawns a +1 text as feedback to the player
+        // spawn text where this Block died
+        b2Vec2 pos = body->GetPosition();
+        game_context->to_create.push_back(std::make_unique<FloatingText>(&g_debugDraw,
+                                                                         pos.x,
+                                                                         pos.y,
+                                                                         "+1",
+                                                                         ImColor(0.00, 0.85, 0.00f),
+                                                                         0.3f /* speed */,
+                                                                         30 /* ttl */));
+
+        // one more live
+        game_context->lives++;
     }
 }
