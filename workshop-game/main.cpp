@@ -23,6 +23,12 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     // code for keys here https://www.glfw.org/docs/3.3/group__keys.html
     // and modifiers https://www.glfw.org/docs/3.3/group__mods.html
 
+    if (key == GLFW_KEY_ESCAPE)
+    {
+        // Quit
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+
     // Retrieve GameContext from the GLFW window
     GameContext* context = (GameContext*)glfwGetWindowUserPointer(window);
 
@@ -107,7 +113,19 @@ int main()
         return -1;
     }
 
-    context.mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, "My game", NULL, NULL);
+    // get main monitor
+    GLFWmonitor* mainMonitor = glfwGetPrimaryMonitor();
+    // make this window fullscreen, based on the GLFW doc here
+    // https://www.glfw.org/docs/3.3/window_guide.html#window_windowed_full_screen
+    const GLFWvidmode* mode = glfwGetVideoMode(mainMonitor);
+    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+    context.mainWindow = glfwCreateWindow(mode->width, mode->height, "Shooting blocks!", mainMonitor, NULL);
+    // update size on the camera object
+    g_camera.m_width = mode->width;
+    g_camera.m_height = mode->height;
 
     if (context.mainWindow == NULL) {
         fprintf(stderr, "Failed to open GLFW g_mainWindow.\n");
@@ -138,7 +156,7 @@ int main()
     // our games. Debug draw calls all the OpenGL functions for us.
     g_debugDraw.Create();
     context.world->SetDebugDraw(&g_debugDraw);
-    CreateUI(context.mainWindow, 20.0f /* font size in pixels */);
+    CreateUI(context.mainWindow, 40.0f /* font size in pixels */);
 
 
     // Some starter objects are created here, such as the ground
