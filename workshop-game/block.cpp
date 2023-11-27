@@ -14,14 +14,13 @@ Block::Block(GameContext* context, float starter_center)
     // size of the blocks are random
     std::random_device dev;
     std::mt19937 rng(dev());
-    // distribution in range [1, 3]
-    // std::uniform_int_distribution<std::mt19937::result_type> dist3(1, 3);
+    // distribution in range [1, 5]
+    std::uniform_int_distribution<std::mt19937::result_type> dist3(1, 5);
     // distribution in range [0, 30]
     std::uniform_int_distribution<std::mt19937::result_type> dist30(0, 30);
 
     b2PolygonShape shape;
-    // shape.SetAsBox(dist3(rng) / 2.5f, dist3(rng) / 2.5f);
-    shape.SetAsBox(1.5f, 0.5f);
+    shape.SetAsBox(dist3(rng) / 2.5f, dist3(rng) / 2.5f);
     b2FixtureDef fd;
     fd.shape = &shape;
     fd.density = 0.01f;
