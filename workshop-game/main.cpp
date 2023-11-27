@@ -207,6 +207,10 @@ int main()
             context.all_objects.push_back(std::make_unique<Block>(&context, character->GetPosition().x));
         }
 
+        // draw points on the corner of the screen
+        std::string points_text = "Points: " + std::to_string(context.points);
+        g_debugDraw.DrawString(10, 10, ImColor(0.35f, 0.73f, 0.87f), points_text.c_str());
+
         // When we call Step(), we run the simulation for one frame
         float timeStep = 60 > 0.0f ? 1.0f / 60 : float(0.0f);
         context.world->Step(timeStep, 8, 3);
@@ -224,6 +228,13 @@ int main()
         context.all_objects.erase(std::remove_if(context.all_objects.begin(), context.all_objects.end(),
                                                  [](const std::unique_ptr<GameObject>& object) { return object->ShouldDelete(); }),
                                   context.all_objects.end());
+
+        // Create all objects that were created during the update function
+        for (auto& create : context.to_create)
+        {
+            context.all_objects.push_back(std::move(create));
+        }
+        context.to_create.clear();
 
         // Render everything on the screen
         context.world->DebugDraw();

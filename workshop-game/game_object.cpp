@@ -28,7 +28,7 @@ void GameObject::OnMousePress(int32, int32, int32)
 }
 
 // PhysicalGameObject functions
-PhysicalGameObject::PhysicalGameObject(const GameContext* context)
+PhysicalGameObject::PhysicalGameObject(GameContext* context)
     : body(nullptr), game_context(context)
 {
 }

@@ -45,7 +45,7 @@ class PhysicalGameObject : public GameObject
 public:
 
     // Main constructor
-    PhysicalGameObject(const GameContext* context);
+    PhysicalGameObject(GameContext* context);
 
     // Copy constructor and copy assigment are deleted for now.
     // TODO: implement those
@@ -65,5 +65,5 @@ public:
 
 protected:
     b2Body* body;
-    const GameContext* game_context;
+    GameContext* game_context;
 };

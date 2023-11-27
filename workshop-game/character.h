@@ -9,7 +9,7 @@
 class Character : public PhysicalGameObject
 {
 public:
-    Character(const GameContext* context);
+    Character(GameContext* context);
 
     virtual void Update() override;
     virtual void OnKeyPress(int key, int scancode, int action, int mods) override;

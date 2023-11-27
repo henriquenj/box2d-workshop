@@ -1,10 +1,13 @@
 
 #include <random>
+#include <memory>
 
 #include "block.h"
+#include "text.h"
+#include "draw_game.h"
 
 
-Block::Block(const GameContext* context, float starter_center)
+Block::Block(GameContext* context, float starter_center)
     : PhysicalGameObject(context)
 {
 
@@ -32,8 +35,30 @@ Block::Block(const GameContext* context, float starter_center)
     body = context->world->CreateBody(&bd);
     body->CreateFixture(&fd);
 
+    time_to_live = 300;
+
 }
 
 Block::~Block()
 {
+}
+
+void Block::Update()
+{
+    // block live for a few seconds and then despawn
+    time_to_live--;
+    if (time_to_live == 0)
+    {
+        b2Vec2 pos = body->GetPosition();
+        b2Vec2 pos_window = g_camera.ConvertWorldToScreen(pos);
+        shouldDelete = true;
+        // make palyer lose one point
+        game_context->points--;
+        // spawn text where this Block died
+        game_context->to_create.push_back(std::make_unique<FloatingText>(&g_debugDraw,
+                                                                         pos_window.x,
+                                                                         pos_window.y,
+                                                                         "-1",
+                                                                         ImColor(0.85, 0.00f, 0.00f)));
+    }
 }

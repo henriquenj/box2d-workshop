@@ -5,7 +5,7 @@
 #include "character.h"
 #include "draw_game.h"
 
-Character::Character(const GameContext* context)
+Character::Character(GameContext* context)
     : PhysicalGameObject(context)
 {
     b2CircleShape circle_shape;

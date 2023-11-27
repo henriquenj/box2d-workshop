@@ -21,9 +21,13 @@ public:
     GLFWwindow* mainWindow = nullptr;
     // Box2D game world
     b2World* world = nullptr;
+    // player start with 10 points
+    int points = 10;
 
     // All game objects in the game. Can be any type of game object
     std::vector<std::unique_ptr<GameObject>> all_objects;
+    // objects created during the Update() function should be created here
+    std::vector<std::unique_ptr<GameObject>> to_create;
 
     // Get mouse position with those getters
 
