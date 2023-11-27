@@ -189,6 +189,7 @@ int main()
     // back goes back to the starting amount (depending on level).
     int frame_counter = 80 /* spawn time at level 1 */;
 
+    bool is_game_over = false;
     // Main application loop
     while (!glfwWindowShouldClose(context.mainWindow)) {
         // Use std::chrono to control frame rate. Objective here is to maintain
@@ -222,7 +223,7 @@ int main()
         g_debugDraw.SetFlags(flags);
 
         frame_counter--;
-        if (frame_counter <= 0)
+        if (frame_counter <= 0 && is_game_over == false)
         {
             // timer has expired, reset it. The time it takes to create a block
             // is related to the current level. TODO: this search can be moved
@@ -252,18 +253,37 @@ int main()
         std::string level = "Level: " + std::to_string(context.level);
         g_debugDraw.DrawString(10, 200, ImColor(0.35f, 0.73f, 0.87f), level.c_str());
 
-        // if lives is 20, reset it to 10 and then increase level
-        if (context.lives >= 20)
+        if (is_game_over == false)
         {
-            context.lives = 10;
-            context.level++;
-            context.all_objects.push_back(std::make_unique<FloatingText>(&g_debugDraw,
-                                                                         character->GetPosition().x,
-                                                                         character->GetPosition().y,
-                                                                         "Faster!",
-                                                                         ImColor(0.00, 0.85, 0.00f),
-                                                                         0.1f /* speed */,
-                                                                         120 /* ttl */));
+            // if lives is 20, reset it to 10 and then increase level
+            if (context.lives >= 20)
+            {
+                context.lives = 10;
+                context.level++;
+                context.all_objects.push_back(std::make_unique<FloatingText>(&g_debugDraw,
+                                                                             character->GetPosition().x,
+                                                                             character->GetPosition().y,
+                                                                             "Faster!",
+                                                                             ImColor(0.00, 0.85, 0.00f),
+                                                                             0.1f /* speed */,
+                                                                             120 /* ttl */));
+            }
+            else if (context.lives <= 0)
+            {
+                std::string game_over_text = "Game over! You reached level " + std::to_string(context.level);
+                // get Character position because we are about to delete it (I
+                // shouldn't have used std::unique_ptr::get()
+                b2Vec2 char_pos = character->GetPosition();
+                // game over! remove all objects
+                context.all_objects.clear();
+                context.to_create.clear();
+                // add game over text with score
+                context.all_objects.push_back(std::make_unique<Text>(&g_debugDraw,
+                                                                     char_pos.x - 10, 25,
+                                                                     game_over_text,
+                                                                     ImColor(0.00, 0.85, 0.5f)));
+                is_game_over = true;
+            }
         }
 
         // When we call Step(), we run the simulation for one frame
