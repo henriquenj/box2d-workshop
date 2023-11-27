@@ -144,7 +144,7 @@ int main()
     // Some starter objects are created here, such as the ground
     b2Body* ground;
     b2EdgeShape ground_shape;
-    ground_shape.SetTwoSided(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+    ground_shape.SetTwoSided(b2Vec2(-4000.0f, 0.0f), b2Vec2(4000.0f, 0.0f));
     b2BodyDef ground_bd;
     ground = context.world->CreateBody(&ground_bd);
     ground->CreateFixture(&ground_shape, 0.0f);
@@ -208,8 +208,8 @@ int main()
         }
 
         // draw points on the corner of the screen
-        std::string points_text = "Points: " + std::to_string(context.points);
-        g_debugDraw.DrawString(10, 10, ImColor(0.35f, 0.73f, 0.87f), points_text.c_str());
+        std::string lives_text = "Lives: " + std::to_string(context.lives);
+        g_debugDraw.DrawString(10, 10, ImColor(0.35f, 0.73f, 0.87f), lives_text.c_str());
 
         // When we call Step(), we run the simulation for one frame
         float timeStep = 60 > 0.0f ? 1.0f / 60 : float(0.0f);

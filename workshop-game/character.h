@@ -13,6 +13,7 @@ public:
 
     virtual void Update() override;
     virtual void OnKeyPress(int key, int scancode, int action, int mods) override;
+    virtual void OnMousePress(int32 button, int32 action, int32 mods) override;
     virtual ~Character();
 
     b2Vec2 GetPosition() const;

@@ -4,6 +4,7 @@
 
 #include "character.h"
 #include "draw_game.h"
+#include "bullet.h"
 
 Character::Character(GameContext* context)
     : PhysicalGameObject(context)
@@ -103,6 +104,27 @@ void Character::OnKeyPress(int key, int scancode, int action, int mods)
         }
     }
 
+}
+
+void Character::OnMousePress(int32 button, int32 action, int32 mods)
+{
+    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_1)
+    {
+        // spawn a bullet if the mouse is pressed anywhere. Fire the bullet in the
+        // direction of which the mouse is pointing
+        b2Vec2 pos = body->GetPosition();
+        b2Vec2 mouse_position = game_context->GetMousePosWorld();
+
+        // find angle between the two
+        b2Vec2 direction = mouse_position - pos;
+        // so the angle is not huge and the bullet goes too fast
+        direction.Normalize();
+        // now we set a size manually, that is the strenght of the bullet
+        direction *= 2.5f;
+        // make them start slighlty above the character
+        pos.y += 1.0f;
+        game_context->to_create.push_back(std::make_unique<Bullet>(game_context, pos, direction));
+    }
 }
 
 b2Vec2 Character::GetPosition() const

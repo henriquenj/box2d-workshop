@@ -24,7 +24,7 @@ Block::Block(GameContext* context, float starter_center)
     shape.SetAsBox(1.5f, 0.5f);
     b2FixtureDef fd;
     fd.shape = &shape;
-    fd.density = 20.0f;
+    fd.density = 0.01f;
     fd.friction = 0.1f;
     b2BodyDef bd;
     bd.type = b2_dynamicBody;
@@ -34,6 +34,7 @@ Block::Block(GameContext* context, float starter_center)
     bd.userData.pointer = (uintptr_t)this;
     body = context->world->CreateBody(&bd);
     body->CreateFixture(&fd);
+    body->SetAngularVelocity(2.0f);
 
     time_to_live = 300;
 
@@ -51,8 +52,8 @@ void Block::Update()
     {
         b2Vec2 pos = body->GetPosition();
         shouldDelete = true;
-        // make palyer lose one point
-        game_context->points--;
+        // make player lose one live
+        game_context->lives--;
         // spawn text where this Block died
         game_context->to_create.push_back(std::make_unique<FloatingText>(&g_debugDraw,
                                                                          pos.x,

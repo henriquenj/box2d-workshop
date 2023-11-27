@@ -9,6 +9,8 @@ set (GAME_SOURCE_FILES
     character.cpp
     block.h
     block.cpp
+    bullet.h
+    bullet.cpp
     imgui_impl_glfw_game.cpp
     imgui_impl_glfw_game.h
     imgui_impl_opengl3_game.cpp
