@@ -28,10 +28,26 @@ public:
     // action is either GLFW_PRESS or GLFW_RELEASE
     virtual void OnMousePress(int32 button, int32 action, int32 mods);
 
+    // Stores here the possible game objects. In a bigger engine, this should be
+    // registered at run timme, but for now let's keep it static. This is useful
+    // when dynamic_casting something from userData in Box2D.
+    enum GameObjectType {DEFAULT, BLOCK, BULLET, CHARACTER};
+    virtual GameObjectType GetGameObjectType()
+    {
+        // if not overriden, return DEFAULT
+        return DEFAULT;
+    }
+
     // Signals the engine if object should be deleted
     bool ShouldDelete() const
     {
         return shouldDelete;
+    }
+
+    // Schedule this object to be deleted
+    void Destroy()
+    {
+        shouldDelete = true;
     }
 
 protected:
@@ -61,7 +77,7 @@ public:
     virtual ~PhysicalGameObject();
 
     // Called when this b2Body collides with another b2Body
-    virtual void OnCollision(PhysicalGameObject* other);
+    virtual void OnCollision(PhysicalGameObject* other, b2Contact* contact);
 
 protected:
     b2Body* body;

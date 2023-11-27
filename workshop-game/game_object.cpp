@@ -80,7 +80,7 @@ PhysicalGameObject::~PhysicalGameObject()
 }
 
 
-void PhysicalGameObject::OnCollision(PhysicalGameObject* other)
+void PhysicalGameObject::OnCollision(PhysicalGameObject* other, b2Contact* contact)
 {
     // Does nothing on base class
 }

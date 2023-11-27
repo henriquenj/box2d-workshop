@@ -96,8 +96,8 @@ public:
         PhysicalGameObject* object1 = (PhysicalGameObject*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
         PhysicalGameObject* object2 = (PhysicalGameObject*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
         // call our new function
-        object1->OnCollision(object2);
-        object2->OnCollision(object1);
+        object1->OnCollision(object2, contact);
+        object2->OnCollision(object1, contact);
 
     }
 };
@@ -157,6 +157,10 @@ int main()
     g_debugDraw.Create();
     context.world->SetDebugDraw(&g_debugDraw);
     CreateUI(context.mainWindow, 40.0f /* font size in pixels */);
+
+    // register contact listener
+    GameContactListener contact_listener;
+    context.world->SetContactListener(&contact_listener);
 
 
     // Some starter objects are created here, such as the ground

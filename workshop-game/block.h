@@ -15,7 +15,13 @@ public:
     Block(GameContext* context, float starter_center);
     virtual ~Block();
 
+    virtual GameObjectType GetGameObjectType() override
+    {
+        return GameObjectType::BLOCK;
+    }
+
     void Update() override;
+    void OnCollision(PhysicalGameObject* other, b2Contact* contact) override;
 
 private:
     // size of the bloc, randomly generated

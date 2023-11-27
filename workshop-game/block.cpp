@@ -61,6 +61,21 @@ void Block::Update()
                                                                          "-1",
                                                                          ImColor(0.85, 0.00f, 0.00f),
                                                                          0.1f /* speed */,
-                                                                         40 /* ttl */));
+                                                                         60 /* ttl */));
+    }
+}
+
+void Block::OnCollision(PhysicalGameObject* other, b2Contact* contact)
+{
+    if (!contact->IsTouching())
+    {
+        // if it is not touching, don't process it.
+        return;
+    }
+    // if collides with a bullet, kills the bullet and the block
+    if (other->GetGameObjectType() == GameObjectType::BULLET)
+    {
+        shouldDelete = true;
+        other->Destroy();
     }
 }

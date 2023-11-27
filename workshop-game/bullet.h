@@ -15,6 +15,12 @@ public:
 
     void Update() override;
 
+    GameObjectType GetGameObjectType() override
+    {
+        // if not overriden, return DEFAULT
+        return GameObjectType::BULLET;
+    }
+
 private:
     int ttl;
 };
